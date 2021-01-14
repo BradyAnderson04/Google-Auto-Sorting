@@ -15,10 +15,6 @@ PUNCTUATION = set(string.punctuation)
 
 #### CLEAN TEXT DATA ####
 
-def tag_words():
-    '''label words as their type to only analyze the nouns'''
-    pass
-
 def clean_punctuation(raw_data):
     '''remove all punctuation by iterating over the input 1 char at a time'''
 
@@ -41,47 +37,59 @@ def clean_useless_words(words):
     
     return cleaned_words
 
-def clean_useless_words_sentences(sentences):
-    for sent in sentences:
-        pass
-    
-    return sentences
+def clean_useless_words_sentences(sentences, list_structure=False):
+    '''
+    use the same previous function on the group sentences
 
-def process_file(input):
+    combine sentences once punctuation and stopwords gone
+    '''
+    output = []
+
+    for sent in sentences:
+        no_punc = clean_punctuation(sent) # remove punctuation
+        words = word_tokenize(no_punc) # tokenize
+        words = clean_useless_words(words) # remove stopwords
+        if(list_structure):
+            output.append(" ".join(words)) # combine back into sentence string
+        else:
+            output.append(words)
+
+    
+    return output
+
+def process_file(file_in):
     '''
     seperate the docuemnt into array of words
     
     input: a string of unprocessed data
     '''
-    no_punc = clean_punctuation(input) # get rid of punctuation
+    no_punc = clean_punctuation(file_in) # get rid of punctuation
     
-    # two appraoches
+    # two appraoches - one for each process and differrent level of analysis
     words = word_tokenize(no_punc)
-    # sentences = sent_tokenize(input)
+    sentences = sent_tokenize(file_in)
 
     # cleaning -- remove stop words
     useful_words = clean_useless_words(words)
-    # useful_sentences = clean_useless_words_sentences(sentences)
+    useful_sentences = clean_useless_words_sentences(sentences)
 
-    return useful_words
+    return useful_words, useful_sentences
 
-def tokenize_sentence(input):
-    '''seperate document into array of sentences'''
-    # sentences = sent_tokenize(input)
-    pass
+#### ANALYZE TEXT FUNCTIONS ####
 
 def stem_words():
     '''relate similar words to each other'''
     pass
 
-
-#### ANALYZE TEXT FUNCTIONS ####
+def tag_words():
+    '''label words as their type to only analyze the nouns'''
+    pass
 
 def keyword_count():
     '''given some document return the most 5 common key words'''
     pass
 
-#### FUZZY MATCHING ####
+#### FUZZY MATCHING -- Not sure about this ####
 def identify():
     '''given the top 5 words match to a category'''
     pass
@@ -92,8 +100,8 @@ if __name__ == '__main__':
     # d = sent_tokenize("God is Great! I won a lottery.")
 
     ### test data ###
-    a = process_file("This, is a test sentence .... ")
-    b = process_file("A   hello ")
+    # a = process_file("This, is a test sentence .... ")
+    # b = process_file("A   hello ")
     c = process_file("God is Great! I won a lottery.")
 
     # print(clean_useless_words_sentences(c))
@@ -101,4 +109,8 @@ if __name__ == '__main__':
     print(c)
     # print(process_file(b))
     # print(process_file(c))
+
+    # d = sent_tokenize("God is Great! I won a lottery.")
+    # print(clean_useless_words_sentences(d))
+
 
