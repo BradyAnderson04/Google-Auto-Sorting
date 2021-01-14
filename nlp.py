@@ -4,7 +4,7 @@ Functions to process a files theme and set a main idea of a document
 import string
 
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import word_tokenize, sent_tokenize
 
 # not sure what will work best, so I'll have to do a few different appraoches at varying degree
 # going to start simple and gradually get more complex
@@ -31,7 +31,7 @@ def clean_punctuation(raw_data):
     
     return raw_data
 
-def clean_useless_data(words):
+def clean_useless_words(words):
     '''get rid of all stopwords'''
     cleaned_words = []
 
@@ -41,12 +41,29 @@ def clean_useless_data(words):
     
     return cleaned_words
 
-def process_file(input):
-    '''seperate the docuemnt into array of words'''
-    no_punc = clean_punctuation(input) # get rid of punctuation
-    words = word_tokenize(no_punc) # get rid of stop words and make everything lowercase
+def clean_useless_words_sentences(sentences):
+    for sent in sentences:
+        pass
+    
+    return sentences
 
-    return words
+def process_file(input):
+    '''
+    seperate the docuemnt into array of words
+    
+    input: a string of unprocessed data
+    '''
+    no_punc = clean_punctuation(input) # get rid of punctuation
+    
+    # two appraoches
+    words = word_tokenize(no_punc)
+    # sentences = sent_tokenize(input)
+
+    # cleaning -- remove stop words
+    useful_words = clean_useless_words(words)
+    # useful_sentences = clean_useless_words_sentences(sentences)
+
+    return useful_words
 
 def tokenize_sentence(input):
     '''seperate document into array of sentences'''
@@ -72,8 +89,16 @@ def identify():
 if __name__ == '__main__':
     # print(type(PUNCTUATION))
 
+    # d = sent_tokenize("God is Great! I won a lottery.")
+
     ### test data ###
     a = process_file("This, is a test sentence .... ")
     b = process_file("A   hello ")
+    c = process_file("God is Great! I won a lottery.")
 
-    print(clean_useless_data(a))
+    # print(clean_useless_words_sentences(c))
+
+    print(c)
+    # print(process_file(b))
+    # print(process_file(c))
+
